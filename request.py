@@ -5,7 +5,7 @@ from models import Challenge
 client = Client()
 
 
-def get_ai_response(prompt: str) -> str:
+async def get_ai_response(prompt: str) -> str:
     chat_completion = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
