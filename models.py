@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
@@ -7,12 +7,3 @@ class Challenge(BaseModel):
     question: str
     answer: str
     notes: Optional[str] = ""
-
-
-class Feedback(BaseModel):
-    grade: int
-    overview: str
-    strategy: str
-    solution: str
-    code_solution: str
-    growth: str
