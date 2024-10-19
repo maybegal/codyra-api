@@ -14,15 +14,25 @@ def get_ai_response(prompt: str) -> str:
     return chat_completion.choices[0].message.content.strip()
 
 
-default_prompt = ""
+default_prompt = """You are an expert programming tutor specializing in providing concise, accurate feedback on 
+coding challenges. Your responses should be clear, direct, and tailored to the specific programming language and 
+challenge presented. Focus solely on the task at hand without additional commentary or explanations unless explicitly 
+requested."""
 
 prompts = {
-    "grade": "Please evaluate the following programming challenge and provide an integer grade (0-100) based on the accuracy and completeness of the user's solution:",
-    "overview": "Provide an overview of the problem posed in the following programming challenge. Explain the core concept that the user needs to understand:",
-    "strategy": "Based on the programming challenge below, provide a strategy that the user should follow to successfully solve this problem. Explain how they should approach it and what techniques they could use:",
-    "solution": "Review the user's answer to the following programming challenge and provide a detailed explanation of what a correct solution would look like in pure English:",
-    "code_solution": "Provide the correct code solution for the following programming challenge. Ensure that the solution is written in the specified programming language and that it addresses the problem accurately:",
-    "growth": "Based on the user's performance on the following programming challenge, provide constructive feedback on how they can improve their understanding of the problem and related concepts. Offer suggestions for further practice or study areas:"
+    "grade": "Assign an integer grade from 0 to 100 for the following solution. Base your grade strictly on code "
+             "correctness, efficiency, and adherence to the problem requirements. Provide only the numerical grade "
+             "without explanation.",
+    "overview": "Identify and explain the single most crucial programming concept required to solve this challenge. "
+                "Limit your response to two sentences focusing solely on the core idea.",
+    "strategy": "Outline a step-by-step approach to solve this programming challenge. Provide a maximum of three "
+                "concise bullet points describing the key steps.",
+    "solution": "Describe the correct solution to this programming challenge in plain English. Use no more than three "
+                "sentences and avoid any code or pseudo-code.",
+    "code_solution": "Write the optimal code solution for this challenge in the specified programming language. "
+                     "Provide only the code without comments or explanations.",
+    "growth": "Identify the single most important area for improvement based on the user's solution. Suggest one "
+              "specific, actionable practice exercise to address this area. Limit your response to two sentences."
 }
 
 
