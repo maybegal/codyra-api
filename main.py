@@ -3,12 +3,12 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-class Question:
+class Task:
     programming_language: str
     question: str
     answer: str
     notes: str = ""
-    completed = False
+    completed: bool = False
 
     def __init__(self, programming_language: str, question: str, answer: str, notes: str = ""):
         self.programming_language = programming_language
@@ -17,9 +17,14 @@ class Question:
         self.notes = notes
         self.completed = False
 
-@app.post("/questions/", response_model=Question)
-def create_question(question: Question):
+
+tasks: list[Task] = []
+
+
+@app.post("/questions/", response_model=Task)
+def create_question(question: Task):
     pass
+
 
 @app.get("/")
 def read():
