@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-
+from uuid import UUID, uuid4
 app = FastAPI()
 
 
 class Task:
+    id: UUID
     programming_language: str
     question: str
     answer: str
@@ -11,6 +12,7 @@ class Task:
     completed: bool = False
 
     def __init__(self, programming_language: str, question: str, answer: str, notes: str = ""):
+        self.id = uuid4()
         self.programming_language = programming_language
         self.question = question
         self.answer = answer
@@ -21,14 +23,15 @@ class Task:
 tasks: list[Task] = []
 
 
-@app.post("/questions/", response_model=Task)
-def create_question(question: Task):
-    pass
+@app.post("/tasks/", response_model=Task)
+def create_task(task: Task):
+    tasks.append(task)
+    return task
 
 
-@app.get("/")
-def read():
-    return {"hello": "world"}
+@app.get("/tasks/", response_model=list[Task])
+def read_tasks():
+    return tasks
 
 
 if __name__ == '__main__':
