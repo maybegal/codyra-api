@@ -1,7 +1,6 @@
 import json
-
 from g4f.client import Client
-from main import Challenge
+from models import Challenge
 
 client = Client()
 
@@ -14,7 +13,7 @@ def create_prompt(challenge: Challenge):
     # Append the dynamic inputs from the Challenge object
     full_prompt = f"{base_prompt}\n\nThe programming language is: {challenge.programming_language}\n" \
                   f"The question posed is: {challenge.question}\n" \
-                  f"The user’s submitted answer is: {challenge.answer}\n" \
+                  f"The user's submitted answer is: {challenge.answer}\n" \
                   f"{f'- Additional notes: {challenge.notes}' if challenge.notes else ''}"
 
     return full_prompt
@@ -41,4 +40,3 @@ def get_response(challenge: Challenge) -> dict:
         }
 
     return json_response
-

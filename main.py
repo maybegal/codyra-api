@@ -1,27 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from request import get_response
-from pydantic import BaseModel
-from typing import Optional
+from models import Challenge, Feedback
+
 app = FastAPI()
 
 
-class Challenge(BaseModel):
-    programming_language: str
-    question: str
-    answer: str
-    notes: Optional[str] = ""
-
-
-class Feedback(BaseModel):
-    grade: int
-    overview: str
-    strategy: str
-    solution: str
-    code_solution: str
-    growth: str
-
-
-@app.get("/", response_model=Challenge)
+@app.get("/", response_model=Feedback)
 def get_feedback(challenge: Challenge) -> Feedback:
     feedback_data = get_response(challenge)
 
