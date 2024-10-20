@@ -72,3 +72,8 @@ async def http_exception_handler(request, exc):
 @app.get("/cache/")
 def get_cache():
     return feedback_cache
+
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app)
