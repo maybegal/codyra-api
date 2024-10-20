@@ -40,7 +40,7 @@ def create_prompt(prompt: str, challenge: Challenge):
     challenge_prompt = f"Programming language: {challenge.programming_language}\n" \
            f"The question: {challenge.question}\n" \
            f"User's answer: {challenge.answer}\n" \
-           f"{f"Additional notes: {challenge.notes}" if challenge.notes else ""}"
+           f"Additional notes: {challenge.notes}"
 
     return default_prompt + "\n" + prompt + "\n\n" + challenge_prompt
 
