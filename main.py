@@ -44,6 +44,22 @@ def validate_grade(response: str) -> int:
         raise HTTPException(status_code=500, detail="Invalid response from AI service")
 
 
+async def get_grade(challenge: Challenge) -> int:
+    prompt = create_prompt(grade_prompt, challenge)
+    ai_response = await get_ai_response(prompt)
+
+    return validate_grade(ai_response)
+
+
+async def get_content(challenge: Challenge) -> str:
+    file = open("prompt.txt", "r")
+
+    prompt = create_prompt(file.read(), challenge)
+    ai_response = await get_ai_response(prompt)
+
+    return ai_response
+
+
 @app.post("/feedback/", response_model=FeedbackResponse)
 async def get_feedback(challenge: Challenge):
     # Check cache first
@@ -52,16 +68,8 @@ async def get_feedback(challenge: Challenge):
         return cached_response
 
     try:
-        # Grade
-        prompt = create_prompt(grade_prompt, challenge)
-        ai_response = await get_ai_response(prompt)
-
-        # Validate and process AI response
-        grade = validate_grade(ai_response)
-
-        # Content
-        prompt = create_prompt(grade_prompt, challenge)
-        content = await get_ai_response(prompt)
+        grade = get_grade(challenge)
+        content = get_content(challenge)
 
         feedback = FeedbackResponse(grade=grade, content=content)
 
