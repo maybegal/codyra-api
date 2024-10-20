@@ -2,11 +2,25 @@ import nest_asyncio
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from request import create_prompt, get_ai_response, prompts
 from models import Challenge, FeedbackResponse
 from typing import Dict, Any
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000/",  # For development
+    "https://codyra-api.vercel.app/"
+]
+
+app.add_middleware(
+    CORSMiddleware,  # type: ignore
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 nest_asyncio.apply()
 
