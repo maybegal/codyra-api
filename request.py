@@ -14,10 +14,28 @@ async def get_ai_response(prompt: str) -> str:
     return chat_completion.choices[0].message.content.strip()
 
 
-default_prompt = """You are an expert programming tutor specializing in providing concise, accurate feedback on 
+default_prompt = """
+ou are an expert programming tutor specializing in providing concise, accurate feedback on 
 coding challenges. Your responses should be clear, direct, and tailored to the specific programming language and 
 challenge presented. Focus solely on the task at hand without additional commentary or explanations unless explicitly 
-requested."""
+requested. Answer in English.
+"""
+
+format_prompt = """
+Format your response using the following markdown-like syntax:
+
+Use "# " to denote main section headers (e.g., "# Overview", "# Strategy")
+Use "## " to denote subsection headers
+Use "- " for bullet points
+Use "`" to enclose inline code snippets
+Use "" to enclose multi-line code blocks, specifying the language after the opening ""
+Use "*" for italic emphasis and "**" for bold emphasis
+Use ">" to denote important notes or quotes
+Use "1. ", "2. ", etc., for numbered lists
+Use "---" for horizontal rules to separate major sections
+
+Ensure that your response is well-structured and easy to read, using appropriate formatting to highlight key points and organize information effectively.
+"""
 
 prompts = {
     "grade": "Assign an integer grade from 0 to 100 for the following solution. Base your grade strictly on code "
@@ -41,6 +59,9 @@ def create_prompt(prompt: str, challenge: Challenge):
            f"The question: {challenge.question}\n" \
            f"User's answer: {challenge.answer}\n" \
            f"Additional notes: {challenge.notes}"
+
+    if prompt != prompts["grade"]:
+        return default_prompt + "\n" + format_prompt + "\n" + prompt + "\n\n" + challenge_prompt
 
     return default_prompt + "\n" + prompt + "\n\n" + challenge_prompt
 
