@@ -10,8 +10,8 @@ from typing import Dict, Any
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000/",  # For development
-    "https://codyra-api.vercel.app/"
+    "http://localhost:3000",  # For development
+    "https://codyra-api.vercel.app"
 ]
 
 app.add_middleware(
