@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, Union
+from typing import Optional
 
 
 class Challenge(BaseModel):
@@ -10,5 +10,5 @@ class Challenge(BaseModel):
 
 
 class FeedbackResponse(BaseModel):
-    feedback_type: str
-    content: Union[str, int]
+    grade: int
+    content: str
