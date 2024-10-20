@@ -3,7 +3,7 @@ import nest_asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from request import create_prompt, get_ai_response, prompts
+from request import create_prompt, get_ai_response, grade_prompt
 from models import Challenge, FeedbackResponse
 from typing import Dict, Any
 
@@ -24,52 +24,51 @@ app.add_middleware(
 
 nest_asyncio.apply()
 
-feedback_cache: Dict[str, Any] = {}
+feedback_cache: Dict[str, FeedbackResponse] = {}
 
 
-def get_cached_response(challenge: Challenge, prompt_type: str) -> Any:
-    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}:{prompt_type}"
+def get_cached_response(challenge: Challenge) -> FeedbackResponse:
+    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}"
     return feedback_cache.get(cache_key)
 
 
-def set_cached_response(challenge: Challenge, prompt_type: str, response: Any):
-    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}:{prompt_type}"
+def set_cached_response(challenge: Challenge, response: FeedbackResponse):
+    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}"
     feedback_cache[cache_key] = response
 
 
-def validate_ai_response(response: str, expected_type: type) -> Any:
+def validate_grade(response: str) -> int:
     try:
-        if expected_type == int:
-            return int(response)
-        return expected_type(response)
+        return int(response)
     except ValueError:
         raise HTTPException(status_code=500, detail="Invalid response from AI service")
 
 
-@app.post("/feedback/{feedback_type}", response_model=FeedbackResponse)
-async def get_feedback(feedback_type: str, challenge: Challenge):
-    if feedback_type not in prompts:
-        raise HTTPException(status_code=400, detail="Invalid feedback type")
-
+@app.post("/feedback/", response_model=FeedbackResponse)
+async def get_feedback(challenge: Challenge):
     # Check cache first
-    cached_response = get_cached_response(challenge, feedback_type)
+    cached_response = get_cached_response(challenge)
     if cached_response:
-        return FeedbackResponse(feedback_type=feedback_type, content=cached_response)
+        return cached_response
 
     try:
-        prompt = create_prompt(prompts[feedback_type], challenge)
+        # Grade
+        prompt = create_prompt(grade_prompt, challenge)
         ai_response = await get_ai_response(prompt)
 
         # Validate and process AI response
-        if feedback_type == "grade":
-            processed_response = validate_ai_response(ai_response, int)
-        else:
-            processed_response = validate_ai_response(ai_response, str)
+        grade = validate_grade(ai_response)
+
+        # Content
+        prompt = create_prompt(grade_prompt, challenge)
+        content = await get_ai_response(prompt)
+
+        feedback = FeedbackResponse(grade=grade, content=content)
 
         # Cache the response
-        set_cached_response(challenge, feedback_type, processed_response)
+        set_cached_response(challenge, feedback)
 
-        return FeedbackResponse(feedback_type=feedback_type, content=processed_response)
+        return feedback
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing feedback: {str(e)}")
