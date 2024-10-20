@@ -13,45 +13,11 @@ async def get_ai_response(prompt: str) -> str:
 
     return chat_completion.choices[0].message.content.strip()
 
-
-default_prompt = """
-ou are an expert programming tutor specializing in providing concise, accurate feedback on 
-coding challenges. Your responses should be clear, direct, and tailored to the specific programming language and 
-challenge presented. Focus solely on the task at hand without additional commentary or explanations unless explicitly 
-requested. Answer in English.
+grade_prompt = """
+Assign an integer grade from 0 to 100 for the following solution. Base your grade strictly on code 
+correctness, efficiency, and adherence to the problem requirements. Provide only the numerical grade without 
+explanation.
 """
-
-format_prompt = """
-Format your response using the following markdown-like syntax:
-
-Use "# " to denote main section headers (e.g., "# Overview", "# Strategy")
-Use "## " to denote subsection headers
-Use "- " for bullet points
-Use "`" to enclose inline code snippets
-Use "" to enclose multi-line code blocks, specifying the language after the opening ""
-Use "*" for italic emphasis and "**" for bold emphasis
-Use ">" to denote important notes or quotes
-Use "1. ", "2. ", etc., for numbered lists
-Use "---" for horizontal rules to separate major sections
-
-Ensure that your response is well-structured and easy to read, using appropriate formatting to highlight key points and organize information effectively.
-"""
-
-prompts = {
-    "grade": "Assign an integer grade from 0 to 100 for the following solution. Base your grade strictly on code "
-             "correctness, efficiency, and adherence to the problem requirements. Provide only the numerical grade "
-             "without explanation.",
-    "overview": "Identify and explain the single most crucial programming concept required to solve this challenge. "
-                "Limit your response to two sentences focusing solely on the core idea.",
-    "strategy": "Outline a step-by-step approach to solve this programming challenge. Provide a maximum of three "
-                "concise bullet points describing the key steps.",
-    "solution": "Describe the correct solution to this programming challenge in plain English. Use no more than three "
-                "sentences and avoid any code or pseudo-code.",
-    "code_solution": "Write the optimal code solution for this challenge in the specified programming language. "
-                     "Provide only the code without comments or explanations.",
-    "growth": "Identify the single most important area for improvement based on the user's solution. Suggest one "
-              "specific, actionable practice exercise to address this area. Limit your response to two sentences."
-}
 
 
 def create_prompt(prompt: str, challenge: Challenge):
