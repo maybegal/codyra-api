@@ -2,7 +2,7 @@ import nest_asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from request import create_prompt, get_ai_response, GRADE_PROMPT, CONTENT_PROMPT
+from request import create_user_prompt, get_ai_response, GRADE_PROMPT, CONTENT_PROMPT
 from models import Challenge, FeedbackResponse
 from typing import Dict, Optional
 
@@ -47,8 +47,8 @@ def validate_grade(response: str) -> int:
 
 
 async def get_grade(challenge: Challenge) -> int:
-    prompt = create_prompt(GRADE_PROMPT, challenge)
-    ai_response = await get_ai_response(prompt)
+    user_prompt = create_user_prompt(challenge)
+    ai_response = await get_ai_response(GRADE_PROMPT, user_prompt)
     return validate_grade(ai_response)
 
 
@@ -56,8 +56,8 @@ async def get_content(challenge: Challenge) -> str:
     if CONTENT_PROMPT is None:
         raise HTTPException(status_code=500, detail="Prompt template is not loaded")
 
-    prompt = create_prompt(CONTENT_PROMPT, challenge)
-    ai_response = await get_ai_response(prompt)
+    user_prompt = create_user_prompt(challenge)
+    ai_response = await get_ai_response(CONTENT_PROMPT, user_prompt)
     return ai_response
 
 
