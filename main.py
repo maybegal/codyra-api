@@ -27,12 +27,12 @@ feedback_cache: Dict[str, FeedbackResponse] = {}
 
 
 def get_cached_response(challenge: Challenge) -> Optional[FeedbackResponse]:
-    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}"
+    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}:{challenge.notes}"
     return feedback_cache.get(cache_key)
 
 
 def set_cached_response(challenge: Challenge, response: FeedbackResponse):
-    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}"
+    cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}:{challenge.notes}"
     feedback_cache[cache_key] = response
 
 
