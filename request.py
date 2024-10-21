@@ -40,4 +40,3 @@ def create_user_prompt(challenge: Challenge) -> str:
            f"Additional notes: {challenge.notes}"
 
     return user_prompt
-

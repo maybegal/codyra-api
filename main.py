@@ -9,7 +9,6 @@ from typing import Dict, Optional
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",  # For development
     "https://codyra-api.vercel.app"
 ]
 
