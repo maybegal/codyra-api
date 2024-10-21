@@ -1,5 +1,5 @@
 from g4f.client import Client
-from models import Challenge
+from models import Challenge, FeedbackResponse
 from typing import Optional
 
 
@@ -27,7 +27,7 @@ async def get_ai_response(system_prompt: str, user_prompt: str) -> str:
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
-        ]
+        ],
     )
 
     return chat_completion.choices[0].message.content.strip()
