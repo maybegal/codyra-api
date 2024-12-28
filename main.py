@@ -15,7 +15,7 @@ from typing import Dict, Optional
 app = FastAPI()
 
 # Define the allowed origins for CORS
-origins = ["https://codyra-api.vercel.app"]
+origins = ["https://codyra-api.vercel.app", "http://localhost"]
 
 # Add CORS middleware to the app
 app.add_middleware(
