@@ -13,6 +13,11 @@ Format your response using the following markdown-like syntax:
 
 Your response should include the following sections, in this order:
 
+# Grade
+Assign an integer grade from 0 to 100 for the following solution. Base your grade strictly on code 
+correctness, efficiency, and adherence to the problem requirements. Provide only the numerical grade without 
+explanation.
+
 # Overview
 Identify and explain the single most crucial programming concept required to solve this challenge. Focusing solely on the core idea. Use this format:
 > Core Concept: [Name of the concept]
