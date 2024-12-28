@@ -6,7 +6,7 @@ import nest_asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from request import create_user_prompt, get_ai_response
+from request import get_ai_response
 from models import Challenge, Feedback
 from typing import Dict, Optional
 
@@ -59,10 +59,7 @@ async def get_feedback(challenge: Challenge):
         return cached_response
 
     try:
-        grade = await get_grade(challenge)
-        content = await get_content(challenge)
-
-        feedback = Feedback(grade=grade, content=content)
+        feedback: Feedback = get_ai_response(challenge)
 
         # Cache the response
         set_cached_response(challenge, feedback)
