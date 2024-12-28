@@ -51,26 +51,6 @@ def set_cached_response(challenge: Challenge, response: FeedbackResponse):
     feedback_cache[cache_key] = response
 
 
-def validate_grade(response: str) -> int:
-    """
-    Validates and converts the AI response to an integer grade.
-    Raises an HTTPException if the grade is invalid.
-    """
-    try:
-        grade = int(response)
-        if not (0 <= grade <= 100):
-            raise ValueError("Grade out of range")
-        return grade
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=f"Invalid grade response: {str(e)}")
-
-
-async def get_grade(challenge: Challenge) -> int:
-    user_prompt = create_user_prompt(challenge)
-    ai_response = await get_ai_response(GRADE_PROMPT, user_prompt)
-    return validate_grade(ai_response)
-
-
 async def get_content(challenge: Challenge) -> str:
     if CONTENT_PROMPT is None:
         raise HTTPException(status_code=500, detail="Prompt template is not loaded")
