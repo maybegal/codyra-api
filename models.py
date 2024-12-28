@@ -9,6 +9,10 @@ class Challenge(BaseModel):
     notes: Optional[str] = ""
 
 
-class FeedbackResponse(BaseModel):
+class Feedback(BaseModel):
     grade: int
-    content: str
+    overview: str
+    strategy: str
+    solution: str
+    code_solution: str
+    growth_opportunities: str
