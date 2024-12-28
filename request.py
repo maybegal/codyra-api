@@ -36,7 +36,7 @@ def create_user_prompt(challenge: Challenge) -> str:
     return user_prompt
 
 
-async def get_ai_response(challenge: Challenge) -> str:
+async def get_ai_response(challenge: Challenge) -> Feedback:
     """
     Sends a request to the AI model with the given system and user prompts.
     Returns the AI's response as a string.
@@ -45,13 +45,13 @@ async def get_ai_response(challenge: Challenge) -> str:
     system_prompt = load_prompt_file()
     user_prompt = create_user_prompt(challenge)
 
-    chat_completion = client.chat.completions.create(
+    completion = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
+        response_format=Feedback,
     )
 
-    # Return the AI's response, stripping any leading/trailing whitespace
-    return chat_completion.choices[0].message.content.strip()
+    return completion.choices[0].message.parsed
