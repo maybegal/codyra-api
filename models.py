@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-# Represents a programming challenge with its details.
 class Challenge(BaseModel):
     """
     Represents a programming challenge.
@@ -18,7 +17,6 @@ class Challenge(BaseModel):
     notes: Optional[str] = ""
 
 
-# Represents feedback for a challenge, including grade and various comments.
 class Feedback(BaseModel):
     """
     Represents feedback for a challenge.
