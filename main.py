@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from request import create_user_prompt, get_ai_response, GRADE_PROMPT, CONTENT_PROMPT
-from models import Challenge, FeedbackResponse
+from models import Challenge, Feedback
 from typing import Dict, Optional
 
 
@@ -30,10 +30,10 @@ app.add_middleware(
 nest_asyncio.apply()
 
 # Initialize a cache for feedback responses
-feedback_cache: Dict[str, FeedbackResponse] = {}
+feedback_cache: Dict[str, Feedback] = {}
 
 
-def get_cached_response(challenge: Challenge) -> Optional[FeedbackResponse]:
+def get_cached_response(challenge: Challenge) -> Optional[Feedback]:
     """
     Retrieves a cached feedback response for a given challenge.
     """
@@ -42,7 +42,7 @@ def get_cached_response(challenge: Challenge) -> Optional[FeedbackResponse]:
     return feedback_cache.get(cache_key)
 
 
-def set_cached_response(challenge: Challenge, response: FeedbackResponse):
+def set_cached_response(challenge: Challenge, response: Feedback):
     """
     Caches the feedback response for a given challenge.
     """
@@ -60,7 +60,7 @@ async def get_content(challenge: Challenge) -> str:
     return ai_response
 
 
-@app.post("/feedback/", response_model=FeedbackResponse)
+@app.post("/feedback/", response_model=Feedback)
 async def get_feedback(challenge: Challenge):
     # Check cache first
     cached_response = get_cached_response(challenge)
@@ -71,7 +71,7 @@ async def get_feedback(challenge: Challenge):
         grade = await get_grade(challenge)
         content = await get_content(challenge)
 
-        feedback = FeedbackResponse(grade=grade, content=content)
+        feedback = Feedback(grade=grade, content=content)
 
         # Cache the response
         set_cached_response(challenge, feedback)
