@@ -101,7 +101,14 @@ def get_cache():
     return feedback_cache
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """
+    Main entry point for the FastAPI server.
+    """
     import uvicorn
 
     uvicorn.run(app)
+
+
+if __name__ == "__main__":
+    main()
