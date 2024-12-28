@@ -10,27 +10,26 @@ from typing import Optional
 client = Client()
 
 
-def load_prompt_file() -> Optional[str]:
+def load_prompt_file(path: str = "prompt.txt") -> Optional[str]:
     """
-    Reads the content of 'prompt.txt' and returns it as a string.
+    Reads the content of given path and returns it as a string.
     Returns None if the file cannot be read.
     """
     try:
-        with open("prompt.txt", "r") as file:
+        with open(path, "r") as file:
             return file.read()
     except FileNotFoundError:
         return None
 
 
-# Load the prompt from the file at module load time
-PROMPT: Optional[str] = load_prompt_file()
-
-
-async def get_ai_response(system_prompt: str, user_prompt: str) -> str:
+async def get_ai_response(user_prompt: str) -> str:
     """
     Sends a request to the AI model with the given system and user prompts.
     Returns the AI's response as a string.
     """
+    # Load the prompt from the file
+    system_prompt = load_prompt_file()
+
     chat_completion = client.chat.completions.create(
         model="gpt-4",
         messages=[
