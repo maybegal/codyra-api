@@ -6,7 +6,7 @@ import nest_asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from request import create_user_prompt, get_ai_response, GRADE_PROMPT, CONTENT_PROMPT
+from request import create_user_prompt, get_ai_response
 from models import Challenge, Feedback
 from typing import Dict, Optional
 
@@ -49,15 +49,6 @@ def set_cached_response(challenge: Challenge, response: Feedback):
     # Create a unique cache key based on the challenge attributes
     cache_key = f"{challenge.programming_language}:{challenge.question}:{challenge.answer}:{challenge.notes}"
     feedback_cache[cache_key] = response
-
-
-async def get_content(challenge: Challenge) -> str:
-    if CONTENT_PROMPT is None:
-        raise HTTPException(status_code=500, detail="Prompt template is not loaded")
-
-    user_prompt = create_user_prompt(challenge)
-    ai_response = await get_ai_response(CONTENT_PROMPT, user_prompt)
-    return ai_response
 
 
 @app.post("/feedback/", response_model=Feedback)
