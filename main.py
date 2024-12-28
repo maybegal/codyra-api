@@ -59,7 +59,7 @@ async def get_feedback(challenge: Challenge):
         return cached_response
 
     try:
-        feedback: Feedback = get_ai_response(challenge)
+        feedback: Feedback = await get_ai_response(challenge)
 
         # Cache the response
         set_cached_response(challenge, feedback)
