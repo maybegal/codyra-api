@@ -42,8 +42,8 @@ async def get_ai_response(challenge: Challenge) -> Feedback:
     Returns the AI's response as a string.
     """
     # Load the prompt from the file
-    system_prompt = load_prompt_file()
-    user_prompt = create_user_prompt(challenge)
+    system_prompt: str = load_prompt_file()
+    user_prompt: str = create_user_prompt(challenge)
 
     completion = client.chat.completions.create(
         model="gpt-4",
