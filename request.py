@@ -22,26 +22,6 @@ def load_prompt_file(path: str = "prompt.txt") -> Optional[str]:
         return None
 
 
-async def get_ai_response(user_prompt: str) -> str:
-    """
-    Sends a request to the AI model with the given system and user prompts.
-    Returns the AI's response as a string.
-    """
-    # Load the prompt from the file
-    system_prompt = load_prompt_file()
-
-    chat_completion = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    )
-
-    # Return the AI's response, stripping any leading/trailing whitespace
-    return chat_completion.choices[0].message.content.strip()
-
-
 def create_user_prompt(challenge: Challenge) -> str:
     """
     Constructs a user prompt string from a Challenge object.
@@ -54,3 +34,24 @@ def create_user_prompt(challenge: Challenge) -> str:
     )
 
     return user_prompt
+
+
+async def get_ai_response(challenge: Challenge) -> str:
+    """
+    Sends a request to the AI model with the given system and user prompts.
+    Returns the AI's response as a string.
+    """
+    # Load the prompt from the file
+    system_prompt = load_prompt_file()
+    user_prompt = create_user_prompt(challenge)
+
+    chat_completion = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+    )
+
+    # Return the AI's response, stripping any leading/trailing whitespace
+    return chat_completion.choices[0].message.content.strip()
