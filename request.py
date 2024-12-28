@@ -2,9 +2,11 @@
 This module handles interactions with the AI client to generate responses based on programming challenges.
 """
 
+import json
 from g4f.client import Client
 from models import Challenge, Feedback
 from typing import Optional
+from fastapi import HTTPException
 
 # Initialize the AI client
 client = Client()
@@ -39,19 +41,35 @@ def create_user_prompt(challenge: Challenge) -> str:
 async def get_ai_response(challenge: Challenge) -> Feedback:
     """
     Sends a request to the AI model with the given system and user prompts.
-    Returns the AI's response as a string.
+    Returns the AI's response as a Feedback object.
     """
     # Load the prompt from the file
     system_prompt: str = load_prompt_file()
     user_prompt: str = create_user_prompt(challenge)
 
-    completion = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        response_format=Feedback,
-    )
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            response_format={"type": "json_object"},
+        )
 
-    return completion.choices[0].message.parsed
+        ai_response = completion.choices[0].message.content
+
+        feedback_data = json.loads(ai_response)
+        feedback = Feedback(**feedback_data)
+        return feedback
+
+    except json.JSONDecodeError as e:
+        raise HTTPException(
+            status_code=500, detail="Error processing feedback: invalid JSON response"
+        )
+    except TypeError as e:
+        raise HTTPException(
+            status_code=500, detail="Error processing feedback: invalid response format"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
