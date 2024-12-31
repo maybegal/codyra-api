@@ -40,6 +40,19 @@ def create_user_prompt(challenge: Challenge) -> str:
     return user_prompt
 
 
+def validate_challenge(challenge: Challenge) -> None:
+    """
+    Validates that the Challenge object contains all required parameters.
+    Raises an HTTPException if any required parameter is missing.
+    """
+    if not challenge.programming_language:
+        raise HTTPException(status_code=400, detail="Programming language is required.")
+    if not challenge.question:
+        raise HTTPException(status_code=400, detail="Question is required.")
+    if not challenge.answer:
+        raise HTTPException(status_code=400, detail="Answer is required.")
+
+
 async def get_ai_response(challenge: Challenge) -> Feedback:
     """
     Sends a request to the AI model with the given system and user prompts.
@@ -47,6 +60,11 @@ async def get_ai_response(challenge: Challenge) -> Feedback:
     """
     # Load the prompt from the file
     system_prompt: str = load_prompt_file()
+
+    # Validate the challenge
+    validate_challenge(challenge)
+
+    # Construct the user prompt
     user_prompt: str = create_user_prompt(challenge)
 
     try:
