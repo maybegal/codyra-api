@@ -4,6 +4,7 @@ This module defines the data models for challenges and feedback using Pydantic.
 
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 
 class Challenge(BaseModel):
@@ -28,3 +29,6 @@ class Feedback(BaseModel):
     solution: str
     code_solution: str
     growth_opportunities: str
+    model: str = "GPT-4o"
+    date: str = datetime.now().strftime("%m/%d/%Y")
+    version: str = "1.00"
