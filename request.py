@@ -31,9 +31,11 @@ def create_user_prompt(challenge: Challenge) -> str:
     user_prompt = (
         f"Programming language: {challenge.programming_language}\n"
         f"The question: {challenge.question}\n"
-        f"User's answer: {challenge.answer}\n"
-        f"Additional notes: {challenge.notes}"
+        f"User's answer: {challenge.answer}"
     )
+
+    if (challenge.notes is not None) and (challenge.notes != ""):
+        user_prompt += f"\nAdditional notes: {challenge.notes}"
 
     return user_prompt
 
