@@ -80,9 +80,9 @@ async def get_ai_response(challenge: Challenge) -> Feedback:
         ai_response = completion.choices[0].message.content
 
         feedback_data = json.loads(ai_response)
-        feedback = Feedback(**feedback_data)
+        feedback_data["programming_language"] = challenge.programming_language
 
-        feedback.programming_language = challenge.programming_language
+        feedback = Feedback(**feedback_data)
 
         return feedback
 
