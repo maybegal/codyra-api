@@ -81,6 +81,9 @@ async def get_ai_response(challenge: Challenge) -> Feedback:
 
         feedback_data = json.loads(ai_response)
         feedback = Feedback(**feedback_data)
+
+        feedback.programming_language = challenge.programming_language
+
         return feedback
 
     except json.JSONDecodeError as e:
