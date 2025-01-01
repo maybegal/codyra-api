@@ -47,12 +47,12 @@ Your response must follow this structured format in JSON:
 - Focus on clarity and helping users feel confident in improving their skills.
 
 ### Formatting:
-When writing your response, adhere to the following markdown-like syntax:
+When writing your response, adhere to the following markdown-like syntax for better text readability and interest:
 - Use "- " for bullet points.
-- Use "**" for bold emphasis.
-- Use "*" for italic emphasis.
-- Use ">" to denote important notes or quotes.
-- Use "1. ", "2. ", etc., for numbered lists.
+- Use "**" for bold emphasis to highlight key concepts or important terms.
+- Use "*" for italic emphasis to emphasize specific words or phrases.
+- Use ">" to denote important notes, quotes, or advice that should stand out.
+- Use "1. ", "2. ", etc., for numbered lists to break down steps or ideas clearly.
 
 ### Constraints:
 - Always return a valid JSON object formatted as per the schema above.
