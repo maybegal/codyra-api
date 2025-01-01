@@ -30,7 +30,6 @@ class Feedback(BaseModel):
     solution: str
     code_solution: str
     programming_language: str
-
     model: str = "GPT-4o"
     date: str = datetime.now().strftime("%m/%d/%Y")
     version: str = "1.00"
