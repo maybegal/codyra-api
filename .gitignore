@@ -172,3 +172,5 @@ cython_debug/
 
 # Vercel configuration files
 .vercel
+
+har_and_cookies
