@@ -26,9 +26,11 @@ class Feedback(BaseModel):
     grade: int
     overview: str
     strategy: str
+    growth_opportunities: str
     solution: str
     code_solution: str
-    growth_opportunities: str
+    programming_language: str
+
     model: str = "GPT-4o"
     date: str = datetime.now().strftime("%m/%d/%Y")
     version: str = "1.00"
