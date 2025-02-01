@@ -16,6 +16,7 @@ class Challenge(BaseModel):
     question: str
     answer: str
     notes: Optional[str] = ""
+    files: list[dict[str, str]] = []
 
 
 class Feedback(BaseModel):
@@ -23,13 +24,16 @@ class Feedback(BaseModel):
     Represents feedback for a challenge.
     """
 
+    programming_language: str
+
     grade: int
     overview: str
     strategy: str
     growth_opportunities: str
     solution: str
     code_solution: str
-    programming_language: str
+    main_function: str
+
     model: str = "GPT-4o"
     date: str = datetime.now().strftime("%m/%d/%Y")
     version: str = "0.1.0"
