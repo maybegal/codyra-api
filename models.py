@@ -15,7 +15,7 @@ class Challenge(BaseModel):
     programming_language: str
     question: str
     answer: str
-    notes: Optional[str] = ""
+    notes: str = ""
     files: list[dict[str, str]] = []
 
 
