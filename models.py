@@ -24,8 +24,6 @@ class Feedback(BaseModel):
     Represents feedback for a challenge.
     """
 
-    programming_language: str
-
     grade: int
     overview: str
     strategy: str
@@ -33,7 +31,8 @@ class Feedback(BaseModel):
     solution: str
     code_solution: str
     main_function: str
-
+    
+    programming_language: str
     model: str = "GPT-4o"
     date: str = datetime.now().strftime("%m/%d/%Y")
     version: str = "0.1.0"
