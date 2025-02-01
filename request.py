@@ -29,13 +29,19 @@ def create_user_prompt(challenge: Challenge) -> str:
     Constructs a user prompt string from a Challenge object.
     """
     user_prompt = (
-        f"Programming language: {challenge.programming_language}\n"
-        f"The question: {challenge.question}\n"
-        f"User's answer: {challenge.answer}"
+        f"Programming language: \n{challenge.programming_language}\n"
+        f"The question: \n{challenge.question}\n"
+        f"User's answer: \n{challenge.answer}"
     )
 
-    if (challenge.notes is not None) and (challenge.notes != ""):
-        user_prompt += f"\nAdditional notes: {challenge.notes}"
+    if challenge.notes != "":
+        user_prompt += f"\nAdditional notes: \n{challenge.notes}"
+
+    if challenge.files:
+        user_prompt += "\nFiles:\n"
+        for file in challenge.files:
+            user_prompt += f"\nFilename: \n{file['filename']}"
+            user_prompt += f"\nContent:\n{file['content']}\n"
 
     return user_prompt
 
