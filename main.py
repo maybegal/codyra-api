@@ -87,16 +87,3 @@ async def http_exception_handler(_request, exc):
 @app.get("/cache/")
 def get_cache():
     return feedback_cache
-
-
-def main() -> None:
-    """
-    Main entry point for the FastAPI server.
-    """
-    import uvicorn
-
-    uvicorn.run(app)
-
-
-if __name__ == "__main__":
-    main()
